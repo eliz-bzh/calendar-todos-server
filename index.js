@@ -41,7 +41,7 @@ app.get('/api/todosByDate', async(req, res) => {
     const collection = req.app.locals.collection;
     const { date } = req.body;
     try{
-        const todos = await collection.find({ date: date }).toArray();
+        const todos = await collection.find({ date }).toArray();
         res.send(todos);
     }
     catch(err){
@@ -54,10 +54,7 @@ app.post('/api/todos', async(req, res) =>{
     const collection = req.app.locals.collection;
     const { date, todo } = req.body;
     try{
-        await collection.insertOne({
-            date: date,
-            todo: todo
-        });
+        await collection.insertOne({ date, todo });
         res.status(200).send('add');
     }
     catch(err){
