@@ -17,10 +17,10 @@ app.get('/api/users', (req, res) => {
 });
 
 app.post('/api/users/create', (req, res) => {
-    const { login, password } = req.body;
+    const { name, role, login, password } = req.body;
     User.findOrCreate({
         where: { login },
-        defaults: { password }
+        defaults: { name, role, password }
     }).then((data)=>{
         if(data[1])
             res.status(200).send('Created new user!')
@@ -40,18 +40,35 @@ app.delete('/api/users/delete/:id', (req, res)=>{
 })
 
 app.get('/api/todos', (req, res)=>{
-    Todo.findAll()
-    .then(data=>{
+    Todo.findAll().then(data=>{
         res.status(200).send(data);
-    })
-    .catch(e=>console.log(e));
+    }).catch(e=>console.log(e));
 })
 
+app.post('/api/todos/create', (req, res) => {
+    const { todo, adress, dateStart, dateEnd, description, allDay, driver_id, user_id } = req.body;
+    Todo.create({ todo, adress, dateStart, dateEnd, description, allDay, driver_id, user_id })
+    .then((data)=>{
+        console.log(data)
+        //if(data[1])
+            res.status(200).send('Created new user!')
+        res.sendStatus(500)
+    }).catch(e=>console.log(e))
+})
 
+app.delete('/api/todos/delete/:id', (req, res)=>{
+    const { id } = req.params;
+    Todo.destroy({
+        where: { id }
+    }).then((data)=>{
+        if(data)
+            res.status(200).send('Deleted!')
+        res.sendStatus(404)
+    }).catch(e=>console.log(e))
+})
 
 db.sequelize.sync().then(()=>{
     app.listen(port, ()=>{
         console.log(`Server running on port: ${port}`);
     });
-})
-.catch((e)=>console.log(e));
+}).catch((e)=>console.log(e));
