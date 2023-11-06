@@ -35,7 +35,7 @@ app.delete('/api/users/delete/:id', (req, res)=>{
     }).then((data)=>{
         if(data)
             res.status(200).send('Deleted!')
-        res.sendStatus(404)
+        res.sendStatus(500)
     }).catch(e=>console.log(e))
 })
 
@@ -64,7 +64,7 @@ app.delete('/api/drivers/delete/:id', (req, res)=>{
     }).then(data=>{
         if(data)
             res.status(200).send('Deleted!')
-        res.sendStatus(404);
+        res.sendStatus(500);
     }).catch(e=>console.log(e))
 })
 
@@ -78,9 +78,7 @@ app.post('/api/todos/create', (req, res) => {
     const { todo, adress, dateStart, dateEnd, description, allDay, driver_id, user_id } = req.body;
     Todo.create({ todo, adress, dateStart, dateEnd, description, allDay, driver_id, user_id })
     .then((data)=>{
-        if(data[1])
-            res.status(200).send('Created new todos!')
-        res.sendStatus(500)
+        res.status(200).send('Created new todos!')
     }).catch(e=>console.log(e))
 })
 
@@ -91,7 +89,7 @@ app.delete('/api/todos/delete/:id', (req, res)=>{
     }).then((data)=>{
         if(data)
             res.status(200).send('Deleted!')
-        res.sendStatus(404)
+        res.sendStatus(500)
     }).catch(e=>console.log(e))
 })
 
